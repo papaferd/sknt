@@ -8,16 +8,23 @@ class datamysql{
 		$this->dbh=mysql_connect (DB_HOST, DB_USER, DB_PASSWORD) or die ('Не могу установить соединение с базой MYSQL: ' . mysql_error());		 
 		mysql_select_db (DB_NAME); 
 		mysql_set_charset('utf8');
-		if(mysql_error())loggingException('Can not create DB connection',mysql_error());
+		if(mysql_error())throw new loggingException('Can not create DB connection',mysql_error());
    	}
 	
 	function __destruct() {       
 		mysql_close($this->dbh);   
 	}
 	
+	function pingmysql($query){
+		if (!mysql_ping($this->dbh)){
+				throw new loggingException('MYSQL Error, Bad PING DB',$query);
+		}
+	}
+	
 	function getquery($query='')
 	{
 
+		$this->pingmysql($query);
 
 			mysql_query($query);
 			
@@ -35,9 +42,7 @@ class datamysql{
 		if($query!='')
 		{
 						
-				if (!mysql_ping($this->dbh)){
-					loggingException('MYSQL Error, Bad PING DB',$query);
-				}
+				$this->pingmysql($query);
 				
 				
 			$data = array();
@@ -72,6 +77,10 @@ class datamysql{
 		}
 		
 	}
+	
+	
+		
+	
 	
 	
 }
