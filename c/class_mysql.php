@@ -1,6 +1,9 @@
 <?php
 defined('BASES') OR exit('No direct script access allowed');
-
+/*
+getquery - просто выполнить запрос
+getdata - получить массив с данными из запроса
+*/
 class datamysql{
 	
 	var $dbh;
