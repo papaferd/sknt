@@ -34,7 +34,7 @@ var $data;
 		$URI = explode('/',$_SERVER['REQUEST_URI']);	
 		foreach($URI as $k=>$v){			
 			if(in_array($v,$acc_m)){				
-				$this->data[$v]=(int) $URI[$k+1];	
+				$this->data[$v]=(int)$URI[$k+1];	
 					if($this->data[$v]==0)$this->method = 'error';
 			}			
 		}
