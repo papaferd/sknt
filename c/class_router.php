@@ -14,7 +14,7 @@ var $data;
 		
 		$this->data = array();
 		//$acc_m - переменные, и действия
-		$acc_m = array(
+		$getline= array(
 		'users',
 		'services'
 		);	
@@ -22,21 +22,23 @@ var $data;
 		'tarif'=>'put_tarif',
 		'tarifs'=>'get_tarifs'
 		);
+		$URI = explode('/',$_SERVER['REQUEST_URI']);
+		
+		
+		//Разбираем урл
+		foreach($URI as $k=>$v){			
+			if(in_array($v,$getline)){			
+				$this->data[$v]=(int)$URI[$k+1];	
+					if($this->data[$v]==0)$this->method = 'jsonError';
+			}else{$this->method = 'jsonError';}
+		}
+		
 		
 		//определяем метод
 		foreach($actions as $k=>$v){
 			if($k == $URI[count($URI)-1]){
 				$this->method = $v;
 			}
-		}
-		
-		//Разбираем урл
-		$URI = explode('/',$_SERVER['REQUEST_URI']);	
-		foreach($URI as $k=>$v){			
-			if(in_array($v,$acc_m)){				
-				$this->data[$v]=(int)$URI[$k+1];	
-					if($this->data[$v]==0)$this->method = 'error';
-			}			
 		}
 		
 		

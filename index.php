@@ -1,6 +1,6 @@
 <?php
 define('BASES', 'sknt');
-
+error_reporting(-1);
 //настройки базы
 include('db_cfg.php');
 //Класс для вызова запросов к базе 
@@ -19,7 +19,6 @@ include('c/class_controller.php');
 
 
 
-$rout = new router();	
-$j = new $rout->method($rout->data);
-new HTML_controller($j);
+$router = new router();	
+new HTMLcontroller(new $router->method($router->data));
 

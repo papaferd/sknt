@@ -1,7 +1,7 @@
 <?php
 defined('BASES') OR exit('No direct script access allowed');
 
-class error{
+class jsonError{
 	
 var $json;
 	

@@ -1,14 +1,12 @@
 <?php
 defined('BASES') OR exit('No direct script access allowed');
 
-class HTML_controller{
+class HTMLcontroller{
 	
-	
-
-	public function __construct($j) {	
-		if(!is_array($j->json))$j->json=array();
+	public function __construct($jJson) {	
+		if(!is_array($jJson->jjson))$jJson->jjson=array();
 		$this->get_header_ok();			
-		count($j->json)<1?$this->json_err():$this->get_html($this->get_json($j->json));		
+		count($jJson->jjson)<1?$this->json_err():$this->get_html($this->get_json($jJson->jjson));		
    	}
 	
 	private function get_header_contetnt_type(){

@@ -8,18 +8,17 @@ class datamysql{
 	
 	var $dbh;
 	function __construct() {	
-		$this->dbh=mysql_connect (DB_HOST, DB_USER, DB_PASSWORD) or die ('Не могу установить соединение с базой MYSQL: ' . mysql_error());		 
-		mysql_select_db (DB_NAME); 
-		mysql_set_charset('utf8');
-		if(mysql_error())throw new loggingException('Can not create DB connection',mysql_error());
+		$this->dbh=mysqli_connect (DB_HOST, DB_USER, DB_PASSWORD, DB_NAME) or die ('Не могу установить соединение с базой MYSQL: ' . mysqli_error($this->dbh));	 
+		mysqli_set_charset($this->dbh,'utf8');
+		if(mysqli_error($this->dbh))throw new loggingException('Can not create DB connection',mysqli_error($this->dbh));
    	}
 	
 	function __destruct() {       
-		mysql_close($this->dbh);   
+		mysqli_close($this->dbh);   
 	}
 	
 	function pingmysql($query){
-		if (!mysql_ping($this->dbh)){
+		if (!mysqli_ping($this->dbh)){
 				throw new loggingException('MYSQL Error, Bad PING DB',$query);
 		}
 	}
@@ -29,11 +28,11 @@ class datamysql{
 
 		$this->pingmysql($query);
 
-			mysql_query($query);
+			mysqli_query($this->dbh,$query);
 			
-				if(mysql_error())
+				if(mysqli_error($this->dbh))
 				{
-					throw new loggingException('MYSQL Error, Bad query->'.mysql_error(),$query);
+					throw new loggingException('MYSQL Error, Bad query->'.mysqli_error($this->dbh),$query);
 				}
 
 	}
@@ -49,14 +48,14 @@ class datamysql{
 				
 				
 			$data = array();
-			$query_list = mysql_query($query);
+			$query_list = mysqli_query($this->dbh,$query);
 			
-				if(!mysql_error())
+				if(!mysqli_error($this->dbh))
 				{
 					
 					if(stristr($query,'SELECT')){
 						
-						while ($row = mysql_fetch_array($query_list, MYSQL_ASSOC)) 
+						while ($row = mysqli_fetch_array($query_list, MYSQLI_ASSOC)) 
 						{
 							$data[] = $row;
 						}

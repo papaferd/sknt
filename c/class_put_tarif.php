@@ -10,22 +10,22 @@ class put_tarif extends get_tarifs{
 		$put = json_decode(file_get_contents('php://input'),true);
 		
 		//Проверяем массив и за одно переменную для изменения
-		if(is_array($put) && $put['tarif_id']!=''){
+		if(is_array($put) && !isset($put['tarif_id'])){
 			
 				$put['tarif_id'] = htmlspecialchars($put['tarif_id']);//Хучь так
 			
-			if($this->json['tarifs'][0]['tarifs'][$put['tarif_id']]!=''){	
-				$newpayday = date("Y-m-d",substr($this->json['tarifs'][0]['tarifs'][$put['tarif_id']]['new_payday'], 0 , -4));
+			if(isset($this->jjson['tarifs'][0]['tarifs'][$put['tarif_id']])){	
+				$newpayday = date("Y-m-d",substr($this->jjson['tarifs'][0]['tarifs'][$put['tarif_id']]['new_payday'], 0 , -4));
 				$query = 'UPDATE `services` SET `tarif_id`='.$put['tarif_id'].',`payday`="'.$newpayday.'" WHERE `user_id`='.$data['users'];
 				$this->getquery($query);
-				$this->json = array('result'=>'ok');
+				$this->jjson = array('result'=>'ok');
 				
 			}else{
-				$this->json = array();
+				$this->jjson = array();
 			}	
 			
 		}else{
-			$this->json = array();
+			$this->jjson = array();
 		}	
    	}
 }
