@@ -16,7 +16,7 @@ class PutTarif extends GetTarifs{
 		//Проверяем массив и за одно переменную для изменения
 		if(is_array($put) && !isset($put['tarif_id'])){
 			
-				$put['tarif_id'] = htmlspecialchars($put['tarif_id']);//Хучь так
+				$put['tarif_id'] = htmlspecialchars($put['tarif_id']);
 			
 			if(isset($this->jjson['tarifs'][0]['tarifs'][$put['tarif_id']])){	
 				$newpayday = date("Y-m-d",substr($this->jjson['tarifs'][0]['tarifs'][$put['tarif_id']]['new_payday'], 0 , -4));
