@@ -1,12 +1,16 @@
 <?php
 defined('BASES') OR exit('No direct script access allowed');
-/*
-Логгирует Exception
-*/
+
+/**
+ * loggingException - Класс Логгирования ошибок в свой лог 
+ * функции: 
+ *    __construct - выполнить логгрование, вывести увдеомление
+ *    logdir - public, static, выполнить запрос и вернуть данные в массиве
+ */
 
 if(!class_exists('Throwable')){
 	
-	class loggingDir extends Exception{
+	abstract class logMethod extends Exception{
 
 		public function __construct($errors='') {	
 			Exception::__construct($$errors); 
@@ -18,7 +22,7 @@ if(!class_exists('Throwable')){
 	
 }else{
 	
-	class loggingDir extends Throwable{
+	abstract class logMethod extends Throwable{
 
 
 		public function __construct($errors='') {	
@@ -28,13 +32,18 @@ if(!class_exists('Throwable')){
 	}
 }
 
-class loggingException extends loggingDir{
+class loggingException extends logMethod{
+	
+/**
+ * Error Message
+ *@var - string
+ */	
 	
 var $Log_Error;	
 	
 		public function __construct($messages,$error='') {	
 			$this->Log_Error = $messages.' >> '.$error;
-			loggingDir::__construct($this->Log_Error); 
+			logMethod::__construct($this->Log_Error); 
 			$this->logdir($this->Log_Error);
 
 

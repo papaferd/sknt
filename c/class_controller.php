@@ -1,54 +1,93 @@
 <?php
 defined('BASES') OR exit('No direct script access allowed');
 
+/**
+ * HTMLcontroller - Контролер вывода HTML документа в представлении JSON
+ * NOTE: Для версий PHP 5 и выше
+ */
+
 class HTMLcontroller{
+
+	/**
+	* __construct - Получает на ввод массив, где ключ == параметр, значение == значение параметра, проверяет его и выдает ответ
+	*return html(header,body = JSON or Error)
+	*/
 	
 	public function __construct($jJson) {	
 		if(!is_array($jJson->jjson))$jJson->jjson=array();
-		$this->get_header_ok();			
-		count($jJson->jjson)<1?$this->json_err():$this->get_html($this->get_json($jJson->jjson));		
+		$this->getHeaderOk();			
+		count($jJson->jjson)<1?$this->getJSONerror():$this->getHTML($this->getJSON($jJson->jjson));		
    	}
 	
-	private function get_header_contetnt_type(){
+	/**
+	* getHeaderContetntType - устанавливает header content type Charset=UTF8
+	*/
+	
+	private function getHeaderContetntType(){
 		header('Content-Type: text/html; charset=utf8');	
 	}
 	
-	private function get_header_ok(){
-		$this->get_header_contetnt_type();
+	/**
+	* getHeaderOk - устанавливает header HTTP/1.0 200 OK
+	*/
+	
+	private function getHeaderOk(){
+		$this->getHeaderContetntType();
 		header('HTTP/1.0 200 OK');	
 	}
 	
-	private function get_header_404(){
-		$this->get_header_contetnt_type();	
+	/**
+	* getHeader404 - устанавливает header HTTP/1.0 404 Not Found
+	*/	
+	
+	private function getHeader404(){
+		$this->getHeaderContetntType();	
 		header('HTTP/1.0 404 Not Found');
 		header('Status: 404 Not Found');
 	}
 	
+	/**
+	* getHTML - выводит полученный результат на экран, обрывает дальнейшее выполнение скрипта
+	*/
 	
-	private function get_html($t){	
-		print($t);
+	private function getHTML($html){	
+		print($html);
 		die;	
 	}
 	
-	private function get_json($array){
+	/**
+	* getJSON - преобразует массив в JSON
+	*return encoded JSON
+	*/
+	
+	private function getJSON($array){
 		//Для пхп <5.4
-		$j = defined('JSON_UNESCAPED_UNICODE')?json_encode($array, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES ):str_replace('\/','/',json_encode($array));
-		return($j);
+		$json_encoded = defined('JSON_UNESCAPED_UNICODE')?json_encode($array, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES ):str_replace('\/','/',json_encode($array));
+		return($json_encoded);
 	}
 	
+	/**
+	* getError404 - Публинчая функция вывода ошибки 404, public, выводит на экран страницу 404 и текст ошибки, записывает в свой лог
+	*return HTML+headers
+	*/
 	
-	public function er404($er){
-		$this->get_header_404();
-		$t ='HTTP/1.0 404 Not Found<br>'.$er;
-		loggingException::logdir($er.'>>'.$_SERVER['REQUEST_URI']);
-		$this->get_html($t);
+	public function getError404($error_text){
+		$this->getHeader404();
+		$html_text ='HTTP/1.0 404 Not Found<br>'.$error_text;
+		LoggingException::logDIR($er.'>>'.$_SERVER['REQUEST_URI']);
+		$this->getHTML($html_text);
 	}
 
-	public function json_err(){
-		$this->get_header_404();
-		$arr = array('result'=>'error');
-		loggingException::logdir('JSON_error>>'.$_SERVER['REQUEST_URI']);
-		$this->get_html($this->get_json($arr));
+	/**
+	* getJSONerror - функция вывода ошибки в ответе JSON, public
+	*return HTML+headers, JSON result Error
+	*/
+	
+	public function getJSONerror(){
+		$this->getHeader404();
+		$array_error = array('result'=>'error');
+		LoggingException::logDIR('JSON_error>>'.$_SERVER['REQUEST_URI']);
+		$this->getHTML($this->getJSON($array_error));
 
 	}
 	

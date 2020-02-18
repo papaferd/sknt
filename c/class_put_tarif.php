@@ -1,12 +1,16 @@
 <?php
 defined('BASES') OR exit('No direct script access allowed');
 
-class put_tarif extends get_tarifs{
+/**
+ * PutTarif - устанавливает выбранный тариф пользователю в базе
+ */
+
+class PutTarif extends GetTarifs{
 
 	
-	function __construct($data) {	
-		get_tarifs::__construct($data);
-			
+	function __construct(array $data) {	
+		
+		GetTarifs::__construct($data);			
 		$put = json_decode(file_get_contents('php://input'),true);
 		
 		//Проверяем массив и за одно переменную для изменения

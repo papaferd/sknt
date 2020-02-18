@@ -7,7 +7,7 @@ $data = array('tarif_id'=>'5');
 $data_json = json_encode($data);
 
 ///Изменить имя сайта при тестировании
-$url ='http://test3.ru/users/services/3/tarif';
+$url ='http://test3.ru/users/1/services/1/tarif';
 
 $ch = curl_init();
 curl_setopt($ch, CURLOPT_URL, $url);

@@ -1,8 +1,9 @@
 <?php
 defined('BASES') OR exit('No direct script access allowed');
-/*
-Простенький роутер
-*/
+
+/**
+ * Router - Разбирает урл и опредлеляет метод для выполнения
+ */
 
 class router{
 	
@@ -13,14 +14,15 @@ var $data;
 	function __construct() {	
 		
 		$this->data = array();
-		//$acc_m - переменные, и действия
+		//$getline - переменные в адресной строке
 		$getline= array(
 		'users',
 		'services'
 		);	
+		//$actions - переменные в адресной строке, модификаторы действия
 		$actions = array(
-		'tarif'=>'put_tarif',
-		'tarifs'=>'get_tarifs'
+		'tarif'=>'PutTarif',
+		'tarifs'=>'GetTarifs'
 		);
 		$URI = explode('/',$_SERVER['REQUEST_URI']);
 		

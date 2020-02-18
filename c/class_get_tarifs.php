@@ -1,12 +1,17 @@
 <?php
 defined('BASES') OR exit('No direct script access allowed');
 
-class get_tarifs extends datamysql{
+/**
+ * GetTarifs - Получвем тариф, данный преобразуем в массив
+ */
+
+
+class GetTarifs extends datamysql{
 
 var $query;	
 var $jjson;
 	
-	function __construct($data) {	
+	function __construct(array $data) {	
 		
 		datamysql::__construct();		
 		$this->query = '
@@ -18,13 +23,14 @@ var $jjson;
 		LEFT JOIN services s ON s.user_id='.$data['users'].'
 		LEFT JOIN tarifs as t2 ON s.tarif_id=t2.id
 		WHERE t.tarif_group_id='.$data['services'];
-		$this->jsonarray_get_tarifs($this->getdata($this->query));
+		$this->jsonarrayGetTarifs($this->getdata($this->query));
 	
    	}
 	
 	
-	private function jsonarray_get_tarifs($query_list){
+	private function jsonarrayGetTarifs($query_list){
 		$this->jjson = array();
+		
 		//Разбираем массив и преобразуем его для вывода в JSON	
 
 		if(isset($query_list[0]['uID'])){
